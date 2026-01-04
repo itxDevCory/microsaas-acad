@@ -1,0 +1,200 @@
+# MicroSaaS Academy AI Configuration
+
+# Operation Mode
+mode: hybrid  # online | offline | hybrid
+
+# AI Models Configuration
+models:
+  # Online models (OpenAI)
+  online:
+    primary: gpt-4-turbo
+    reasoning: o1-preview
+    coding: gpt-4-turbo
+    vision: gpt-4-vision-preview
+    image: dall-e-3
+  
+  # Offline models (Ollama)
+  offline:
+    primary: codellama:34b
+    reasoning: mistral:latest
+    coding: codellama:34b
+    embedding: nomic-embed-text
+  
+  # Fallback strategy
+  fallback: offline  # Use offline if online fails
+
+# Learning Configuration
+curriculum:
+  pace: accelerated  # normal | accelerated | custom
+  style: project-based  # lecture | project-based | hybrid
+  depth: masters  # beginner | intermediate | advanced | masters
+  focus:
+    - fullstack
+    - ai-ml
+    - business
+    - devops
+  
+  # Daily goals
+  daily_commitment: 2-4 hours
+  projects_per_month: 2-4
+  
+  # Skill tree
+  prerequisites_enforced: false  # Allow skipping if confident
+  adaptive_difficulty: true
+
+# Project Generation
+projects:
+  quality: production  # prototype | mvp | production
+  stack_preference: modern  # modern | stable | cutting-edge
+  
+  default_stack:
+    frontend: Next.js + TypeScript + Tailwind
+    backend: Next.js API Routes
+    database: SQLite (local) / PostgreSQL (production)
+    auth: NextAuth.js
+    payments: Stripe
+    hosting: Vercel
+  
+  # Auto-include features
+  auto_features:
+    - authentication
+    - responsive_design
+    - seo_optimization
+    - analytics
+    - error_tracking
+  
+  # Code quality
+  include_tests: true
+  include_docs: true
+  include_deployment: true
+
+# Monetization Tools
+monetization:
+  auto_pricing: true
+  market_research: true
+  competitor_analysis: true
+  
+  pricing_models:
+    - subscription
+    - one-time
+    - freemium
+    - usage-based
+  
+  payment_providers:
+    - stripe
+    - paddle
+    - lemon-squeezy
+  
+  # Marketing automation
+  generate_landing_page: true
+  generate_marketing_copy: true
+  seo_optimization: true
+
+# Multi-Agent System
+agents:
+  tutor:
+    enabled: true
+    personality: encouraging-but-rigorous
+    teaching_style: socratic
+  
+  coder:
+    enabled: true
+    code_style: clean-architecture
+    comment_level: moderate
+  
+  architect:
+    enabled: true
+    focus: scalability-and-simplicity
+  
+  marketer:
+    enabled: true
+    tone: authentic-and-value-focused
+  
+  reviewer:
+    enabled: true
+    strictness: high
+
+# Progress Tracking
+tracking:
+  save_locally: true
+  sync_cloud: false  # Privacy-first
+  
+  metrics:
+    - skills_acquired
+    - projects_completed
+    - code_quality_score
+    - learning_velocity
+    - earnings_potential
+  
+  milestones:
+    - first_project
+    - first_sale
+    - 1k_mrr
+    - 10k_mrr
+
+# Data Storage
+storage:
+  local_path: ./data
+  backup_enabled: true
+  backup_frequency: daily
+  
+  # SSD portability
+  portable_mode: true
+  sync_strategy: manual  # manual | auto
+
+# API Keys (set via environment variables)
+api_keys:
+  openai: ${OPENAI_API_KEY}
+  anthropic: ${ANTHROPIC_API_KEY}
+  stripe: ${STRIPE_SECRET_KEY}
+  
+# Privacy & Security
+privacy:
+  telemetry: false
+  crash_reports: false
+  share_anonymous_usage: false
+  
+security:
+  encrypt_local_data: true
+  api_key_storage: env-only
+
+# Updates
+updates:
+  auto_check: true
+  auto_install: false  # Manual approval required
+  channel: stable  # stable | beta | nightly
+  
+  update_components:
+    - models
+    - curriculum
+    - templates
+    - tools
+
+# iPad Optimization
+ipad:
+  touch_optimized: true
+  offline_capable: true
+  responsive_breakpoints: true
+  gesture_support: true
+
+# Advanced Features
+advanced:
+  # Multi-project management
+  parallel_projects: 3
+  
+  # AI collaboration
+  multi_agent_collaboration: true
+  agent_debate_mode: false  # Agents discuss approaches
+  
+  # Learning optimization
+  spaced_repetition: true
+  active_recall: true
+  
+  # Business intelligence
+  market_trend_analysis: true
+  competitor_monitoring: false
+  
+  # Code generation
+  include_edge_cases: true
+  security_first: true
+  performance_optimized: true
