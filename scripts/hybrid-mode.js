@@ -19,8 +19,12 @@ let hasOllama = false;
 
 if (fs.existsSync(envPath)) {
   const envContent = fs.readFileSync(envPath, 'utf-8');
-  hasOpenAI = envContent.includes('OPENAI_API_KEY=sk-') && 
-              !envContent.includes('OPENAI_API_KEY=sk-your-key-here');
+  // Check if API key is set and not the placeholder
+  const apiKeyMatch = envContent.match(/OPENAI_API_KEY=(.+)/);
+  hasOpenAI = apiKeyMatch && 
+              apiKeyMatch[1].trim() !== '' && 
+              apiKeyMatch[1].trim() !== 'sk-your-key-here' &&
+              !apiKeyMatch[1].includes('your-key-here');
 } else {
   console.log('⚠️  .env.local not found');
   console.log('   Run: npm run setup\n');

@@ -207,6 +207,8 @@ Include:
 
 /**
  * Get the system prompt for a specific agent
+ * Falls back to tutor agent as the default, which provides the most balanced
+ * general-purpose guidance for learning and development.
  */
 export function getSystemPrompt(agent: Agent): string {
   return systemPrompts[agent] || systemPrompts.tutor;

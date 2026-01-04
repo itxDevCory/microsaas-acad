@@ -27,8 +27,10 @@ console.log('Checking for required models...');
 try {
   const models = execSync('ollama list', { encoding: 'utf-8' });
   
-  const hasCodeLlama = models.includes('codellama');
-  const hasMistral = models.includes('mistral');
+  // More precise model matching
+  const modelLines = models.split('\n').filter(line => line.trim());
+  const hasCodeLlama = modelLines.some(line => /^codellama[:]/i.test(line));
+  const hasMistral = modelLines.some(line => /^mistral[:]/i.test(line));
   
   if (hasCodeLlama) {
     console.log('✅ codellama found');

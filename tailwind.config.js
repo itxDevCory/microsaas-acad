@@ -12,6 +12,9 @@ module.exports = {
           750: '#374151',
         },
       },
+      fontFamily: {
+        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
       typography: {
         DEFAULT: {
           css: {

@@ -154,11 +154,12 @@ ui:
   animations_enabled: true
 
 # Features
+# Toggle features on/off to customize functionality
 features:
-  code_review: true
-  analytics: false
-  progress_tracking: false
-  collaboration: false
+  code_review: true        # Enable code review functionality (future feature)
+  analytics: false         # Track usage analytics (future feature)
+  progress_tracking: false # Track learning progress (future feature)
+  collaboration: false     # Enable collaboration features (future feature)
   
 # Deployment
 deployment:

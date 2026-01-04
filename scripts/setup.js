@@ -40,7 +40,9 @@ if (!fs.existsSync(nodeModulesPath)) {
     execSync('npm install', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
     console.log('✅ Dependencies installed\n');
   } catch (error) {
-    console.error('❌ Failed to install dependencies\n');
+    console.error('❌ Failed to install dependencies');
+    console.error('Error details:', error instanceof Error ? error.message : String(error));
+    console.error('\nPlease try running: npm install --verbose\n');
     process.exit(1);
   }
 } else {
