@@ -1,0 +1,172 @@
+# MicroSaaS Academy Configuration
+# Customize your learning and development environment
+
+# Application Settings
+app:
+  name: "MicroSaaS Academy AI"
+  version: "1.0.0"
+  port: 3000
+  
+# Default Mode
+# Options: online, offline, hybrid
+mode:
+  default: "online"
+  
+# Agent Configuration
+agents:
+  default: "tutor"
+  
+  tutor:
+    name: "TutorAgent"
+    emoji: "👨‍🏫"
+    description: "Teaches concepts and best practices"
+    model: "gpt-4"
+    temperature: 0.7
+    
+  coder:
+    name: "CoderAgent"
+    emoji: "💻"
+    description: "Generates production-ready code"
+    model: "gpt-4"
+    temperature: 0.3
+    
+  architect:
+    name: "ArchitectAgent"
+    emoji: "🏗️"
+    description: "Designs system architecture"
+    model: "gpt-4"
+    temperature: 0.5
+    
+  marketer:
+    name: "MarketerAgent"
+    emoji: "📈"
+    description: "Creates go-to-market strategy"
+    model: "gpt-4"
+    temperature: 0.7
+    
+  reviewer:
+    name: "ReviewerAgent"
+    emoji: "🔍"
+    description: "Reviews code and architecture"
+    model: "gpt-4"
+    temperature: 0.4
+    
+  curriculum:
+    name: "CurriculumDirector"
+    emoji: "🎓"
+    description: "Designs learning paths"
+    model: "gpt-4"
+    temperature: 0.6
+
+# OpenAI Configuration
+openai:
+  model: "gpt-4"
+  max_tokens: 2000
+  temperature: 0.7
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+
+# Ollama Configuration (for offline mode)
+ollama:
+  url: "http://localhost:11434"
+  models:
+    code: "codellama:34b"
+    general: "mistral:latest"
+  timeout: 120
+
+# Chat Configuration
+chat:
+  max_history: 10
+  max_message_length: 4000
+  auto_scroll: true
+  markdown_enabled: true
+
+# Learning Paths
+learning_paths:
+  fast_track:
+    name: "Fast Track"
+    duration_weeks: 2
+    focus: "Build first, learn later"
+    
+  structured:
+    name: "Structured"
+    duration_weeks: 4
+    focus: "Learn first, build better"
+    
+  hybrid:
+    name: "Hybrid"
+    duration_weeks: 3
+    focus: "Balanced approach"
+
+# Project Templates
+project_templates:
+  - name: "Receipt Scanner"
+    category: "micro-saas"
+    difficulty: "intermediate"
+    tech_stack: ["Next.js", "OpenAI", "Stripe"]
+    
+  - name: "URL Shortener"
+    category: "micro-saas"
+    difficulty: "beginner"
+    tech_stack: ["Next.js", "PostgreSQL", "Redis"]
+    
+  - name: "AI Content Generator"
+    category: "micro-saas"
+    difficulty: "intermediate"
+    tech_stack: ["Next.js", "OpenAI", "Supabase"]
+    
+  - name: "Task Manager"
+    category: "practice"
+    difficulty: "beginner"
+    tech_stack: ["React", "Node.js", "MongoDB"]
+
+# Quick Prompts
+quick_prompts:
+  - text: "Build a receipt scanner micro-SaaS"
+    agent: "coder"
+    category: "build"
+    
+  - text: "Teach me Next.js fundamentals"
+    agent: "tutor"
+    category: "learn"
+    
+  - text: "Design a scalable SaaS architecture"
+    agent: "architect"
+    category: "design"
+    
+  - text: "Create a launch strategy for my app"
+    agent: "marketer"
+    category: "launch"
+    
+  - text: "Create a 30-day learning plan"
+    agent: "curriculum"
+    category: "plan"
+
+# UI Configuration
+ui:
+  theme: "dark"
+  primary_color: "#3B82F6"
+  secondary_color: "#8B5CF6"
+  show_agent_selector: true
+  show_mode_selector: true
+  show_context_panel: true
+  animations_enabled: true
+
+# Features
+features:
+  code_review: true
+  analytics: false
+  progress_tracking: false
+  collaboration: false
+  
+# Deployment
+deployment:
+  platform: "vercel"
+  auto_deploy: false
+  
+# Development
+development:
+  hot_reload: true
+  debug_mode: false
+  verbose_logging: false
