@@ -1,319 +1,270 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
-
-type Agent = 'tutor' | 'coder' | 'architect' | 'marketer' | 'reviewer' | 'curriculum';
-type Mode = 'online' | 'offline' | 'hybrid';
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-  agent?: Agent;
-  timestamp: Date;
-}
+import { HeroSection } from '@/components/HeroSection';
+import { FeaturesSection } from '@/components/FeaturesSection';
+import { WorkflowDemo } from '@/components/WorkflowVisualizer';
+import { ProjectShowcase } from '@/components/ProjectShowcase';
+import { SmartInput } from '@/components/SmartInput';
+import { ParallaxSection } from '@/components/ParallaxSection';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { MessageSquare, Github, Twitter } from 'lucide-react';
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [context, setContext] = useState('');
-  const [agent, setAgent] = useState<Agent>('tutor');
-  const [mode, setMode] = useState<Mode>('online');
-  const [isLoading, setIsLoading] = useState(false);
-  const [showContext, setShowContext] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const agentInfo: Record<Agent, { name: string; emoji: string; description: string }> = {
-    tutor: {
-      name: 'TutorAgent',
-      emoji: '👨‍🏫',
-      description: 'Teaches concepts and best practices',
-    },
-    coder: {
-      name: 'CoderAgent',
-      emoji: '💻',
-      description: 'Generates production-ready code',
-    },
-    architect: {
-      name: 'ArchitectAgent',
-      emoji: '🏗️',
-      description: 'Designs system architecture',
-    },
-    marketer: {
-      name: 'MarketerAgent',
-      emoji: '📈',
-      description: 'Creates go-to-market strategy',
-    },
-    reviewer: {
-      name: 'ReviewerAgent',
-      emoji: '🔍',
-      description: 'Reviews code and architecture',
-    },
-    curriculum: {
-      name: 'CurriculumDirector',
-      emoji: '🎓',
-      description: 'Designs learning paths',
-    },
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      role: 'user',
-      content: input,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: input,
-          agent,
-          context: context || undefined,
-          conversationHistory: messages.slice(-10), // Last 10 messages for context
-          mode,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        const assistantMessage: Message = {
-          role: 'assistant',
-          content: data.response,
-          agent,
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, assistantMessage]);
-      } else {
-        throw new Error(data.error || 'Failed to get response');
-      }
-    } catch (error) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: `Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const clearChat = () => {
-    setMessages([]);
-    setInput('');
-  };
-
-  const quickPrompts = [
-    { text: 'Build a receipt scanner micro-SaaS', agent: 'coder' as Agent },
-    { text: 'Teach me Next.js fundamentals', agent: 'tutor' as Agent },
-    { text: 'Design a scalable SaaS architecture', agent: 'architect' as Agent },
-    { text: 'Create a launch strategy for my app', agent: 'marketer' as Agent },
-    { text: 'Create a 30-day learning plan', agent: 'curriculum' as Agent },
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      {/* Header */}
-      <header className="border-b border-gray-700 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                MicroSaaS Academy AI
-              </h1>
-              <p className="text-sm text-gray-400 mt-1">Learn, Build, Earn - Your AI Mentor</p>
+    <div className="min-h-screen bg-white text-black">
+      {/* Navigation */}
+      <motion.nav
+        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🚀</span>
+              <span className="text-xl font-bold text-black">
+                ITX DEVELOPERS
+              </span>
             </div>
-            
             <div className="flex items-center gap-4">
-              {/* Mode Selector */}
-              <select
-                value={mode}
-                onChange={(e) => setMode(e.target.value as Mode)}
-                className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <Link
+                href="/chat"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-black transition-colors"
               >
-                <option value="online">🌐 Online</option>
-                <option value="offline">💾 Offline</option>
-                <option value="hybrid">⚡ Hybrid</option>
-              </select>
-
-              {/* Agent Selector */}
-              <select
-                value={agent}
-                onChange={(e) => setAgent(e.target.value as Agent)}
-                className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <MessageSquare className="w-4 h-4" />
+                <span className="hidden sm:inline">Advanced Chat</span>
+              </Link>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-gray-600 hover:text-black transition-colors"
               >
-                {Object.entries(agentInfo).map(([key, info]) => (
-                  <option key={key} value={key}>
-                    {info.emoji} {info.name}
-                  </option>
-                ))}
-              </select>
+                <Github className="w-5 h-5" />
+              </a>
             </div>
-          </div>
-
-          {/* Agent Description */}
-          <div className="mt-3 text-sm text-gray-400">
-            <span className="font-medium text-gray-300">Current Agent:</span>{' '}
-            {agentInfo[agent].description}
           </div>
         </div>
-      </header>
+      </motion.nav>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        {/* Quick Prompts (shown when no messages) */}
-        {messages.length === 0 && (
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4 text-gray-300">Quick Start</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {quickPrompts.map((prompt, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setAgent(prompt.agent);
-                    setInput(prompt.text);
-                  }}
-                  className="p-4 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-750 hover:border-blue-500 transition-all text-left"
-                >
-                  <div className="text-sm font-medium text-gray-300">{prompt.text}</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {agentInfo[prompt.agent].emoji} {agentInfo[prompt.agent].name}
+      {/* Hero Section */}
+      <ParallaxSection speed={0.3}>
+        <HeroSection />
+      </ParallaxSection>
+
+      {/* Features Section */}
+      <ParallaxSection speed={0.2}>
+        <FeaturesSection />
+      </ParallaxSection>
+
+      {/* How It Works Section */}
+      <ParallaxSection speed={0.25}>
+        <WorkflowDemo />
+      </ParallaxSection>
+
+      {/* Project Showcase Section */}
+      <ParallaxSection speed={0.2}>
+        <ProjectShowcase />
+      </ParallaxSection>
+
+      {/* Smart Input Section */}
+      <ParallaxSection speed={0.15} className="py-24 bg-white">
+        <SmartInput />
+      </ParallaxSection>
+
+      {/* Testimonials Section */}
+      <ParallaxSection speed={0.2} className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-black">
+              What Developers Say
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'Sarah Chen',
+                role: 'Full-Stack Developer',
+                content: 'The AI agents handle everything - I just had to describe what I wanted. Built my first project in 3 days.',
+                avatar: '👩‍💻',
+              },
+              {
+                name: 'Marcus Rodriguez',
+                role: 'Solo Founder',
+                content: 'No more guessing which tools to use or how to structure my code. The orchestrator automatically picks the right agents and delivers production-ready code.',
+                avatar: '👨‍💼',
+              },
+              {
+                name: 'Emily Watson',
+                role: 'Designer turned Developer',
+                content: 'As a designer learning to code, this is a game-changer. The AI teaches me while building my projects.',
+                avatar: '👩‍🎨',
+              },
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-6 bg-white border border-gray-200"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-black flex items-center justify-center text-2xl">
+                    {testimonial.avatar}
                   </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Messages */}
-        <div className="bg-gray-800/50 rounded-lg border border-gray-700 min-h-[500px] max-h-[600px] overflow-y-auto mb-4 p-4">
-          {messages.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-gray-500">
-              <div className="text-center">
-                <div className="text-6xl mb-4">🚀</div>
-                <p className="text-lg">Ready to learn and build?</p>
-                <p className="text-sm mt-2">Choose a quick prompt or type your own message below</p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {messages.map((message, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-lg p-4 ${
-                      message.role === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-700 text-gray-100'
-                    }`}
-                  >
-                    {message.role === 'assistant' && message.agent && (
-                      <div className="text-xs text-gray-400 mb-2">
-                        {agentInfo[message.agent].emoji} {agentInfo[message.agent].name}
-                      </div>
-                    )}
-                    <div className="prose prose-invert prose-sm max-w-none">
-                      <ReactMarkdown>{message.content}</ReactMarkdown>
-                    </div>
-                    <div className="text-xs text-gray-400 mt-2">
-                      {message.timestamp.toLocaleTimeString()}
-                    </div>
+                  <div>
+                    <div className="font-semibold text-black">{testimonial.name}</div>
+                    <div className="text-sm text-gray-600">{testimonial.role}</div>
                   </div>
                 </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-700 rounded-lg p-4">
-                    <div className="flex items-center gap-2">
-                      <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-                      <span className="text-sm text-gray-400">
-                        {agentInfo[agent].name} is thinking...
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
+                <p className="text-gray-700 leading-relaxed">"{testimonial.content}"</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </ParallaxSection>
+
+      {/* FAQ Section */}
+      <ParallaxSection speed={0.15} className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-black">
+              Frequently Asked Questions
+            </h2>
+          </motion.div>
+
+          <div className="space-y-6">
+            {[
+              {
+                q: 'Do I need to know which AI agent to use?',
+                a: 'No! That\'s the magic of our smart orchestrator. Just describe what you want in plain English, and the AI automatically selects and coordinates the right agents for your task.',
+              },
+              {
+                q: 'How is this different from ChatGPT?',
+                a: 'We have 6 specialized AI agents that work together automatically. ChatGPT is a single general-purpose AI. Our system also includes progress tracking, project generation, and works offline.',
+              },
+              {
+                q: 'Can I use this offline?',
+                a: 'Yes! We support offline mode with local AI models (Ollama). Your code and ideas stay completely private on your machine.',
+              },
+              {
+                q: 'How long does it take to build a project?',
+                a: 'Most micro-SaaS projects are completed in 2-5 days, including code, architecture, tests, and documentation. Simple tools can be done in hours.',
+              },
+              {
+                q: 'Do I need to be an expert developer?',
+                a: 'Not at all! The AI teaches you while building. Whether you\'re a beginner or expert, the system adapts to your level and helps you learn.',
+              },
+            ].map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-6 bg-gray-50 border border-gray-200"
+              >
+                <h3 className="text-lg font-semibold text-black mb-3">{faq.q}</h3>
+                <p className="text-gray-700 leading-relaxed">{faq.a}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </ParallaxSection>
+
+      {/* Final CTA Section */}
+      <ParallaxSection speed={0.1} className="py-24 bg-black text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+              Ready to Build with ITX Developers?
+            </h2>
+            <p className="text-xl text-gray-400 mb-8">
+              Join developers who are learning and building with intelligent AI agents
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="#smart-input"
+                className="px-8 py-4 bg-white text-black font-medium hover:bg-gray-100 transition-all duration-300"
+              >
+                Start Building Now
+              </a>
+              <Link
+                href="/chat"
+                className="px-8 py-4 bg-transparent text-white font-medium border border-white hover:bg-white hover:text-black transition-all duration-300"
+              >
+                Try Advanced Chat
+              </Link>
             </div>
-          )}
+          </motion.div>
         </div>
-
-        {/* Context Panel (collapsible) */}
-        <div className="mb-4">
-          <button
-            onClick={() => setShowContext(!showContext)}
-            className="text-sm text-gray-400 hover:text-gray-300 mb-2"
-          >
-            {showContext ? '▼' : '▶'} Add Context (optional)
-          </button>
-          {showContext && (
-            <textarea
-              value={context}
-              onChange={(e) => setContext(e.target.value)}
-              placeholder="Add context: your skill level, project details, constraints, etc."
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              rows={3}
-            />
-          )}
-        </div>
-
-        {/* Input Form */}
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="What would you like to learn or build today?"
-            className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            disabled={isLoading || !input.trim()}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed rounded-lg font-medium transition-colors"
-          >
-            {isLoading ? 'Sending...' : 'Send'}
-          </button>
-          {messages.length > 0 && (
-            <button
-              type="button"
-              onClick={clearChat}
-              className="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
-            >
-              Clear
-            </button>
-          )}
-        </form>
-      </main>
+      </ParallaxSection>
 
       {/* Footer */}
-      <footer className="border-t border-gray-700 mt-8 py-4">
-        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
-          <p>MicroSaaS Academy AI - Learn, Build, Earn 🚀</p>
-          <p className="mt-1">
-            Mode: <span className="text-gray-400">{mode}</span> | Agent:{' '}
-            <span className="text-gray-400">{agentInfo[agent].name}</span>
-          </p>
+      <footer className="border-t border-gray-200 py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">🚀</span>
+                <span className="text-lg font-bold text-black">ITX DEVELOPERS</span>
+              </div>
+              <p className="text-gray-600 text-sm">
+                Learn, build, and launch micro-SaaS products with intelligent AI agents
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4 text-black">Product</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><a href="#smart-input" className="hover:text-black transition-colors">Features</a></li>
+                <li><Link href="/chat" className="hover:text-black transition-colors">Advanced Chat</Link></li>
+                <li><a href="#" className="hover:text-black transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-black transition-colors">Documentation</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4 text-black">Resources</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><a href="#" className="hover:text-black transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-black transition-colors">Tutorials</a></li>
+                <li><a href="#" className="hover:text-black transition-colors">Examples</a></li>
+                <li><a href="#" className="hover:text-black transition-colors">Community</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4 text-black">Connect</h3>
+              <div className="flex gap-4">
+                <a href="#" className="text-gray-600 hover:text-black transition-colors">
+                  <Github className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-600 hover:text-black transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-200 pt-8 text-center text-sm text-gray-600">
+            <p>© 2024 ITX Developers. All rights reserved.</p>
+            <p className="mt-2">Built with ❤️ using Next.js, TypeScript, and AI</p>
+          </div>
         </div>
       </footer>
     </div>

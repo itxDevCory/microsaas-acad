@@ -5,13 +5,12 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MicroSaaS Academy AI - Learn, Build, Earn',
-  description: 'Your personal AI mentor for building and selling profitable micro-SaaS products',
-  keywords: ['micro-saas', 'ai', 'learning', 'coding', 'entrepreneurship'],
-  authors: [{ name: 'MicroSaaS Academy' }],
+  title: 'AIWebology - Build Websites with AI | No Code Required',
+  description: 'Transform ideas into professional websites using AI. Build, customize, and launch web applications without coding. Free AI-powered website builder and development platform.',
+  keywords: ['ai website builder', 'no code', 'ai web development', 'website creator', 'ai tools', 'web design ai', 'automated website builder', 'ai coding assistant'],
+  authors: [{ name: 'AIWebology' }],
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#1f2937',
-};
 
 export default function RootLayout({
   children,
