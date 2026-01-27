@@ -8,23 +8,6 @@ const nextConfig = {
     NEXT_PUBLIC_APP_VERSION: '1.0.0',
   },
 
-  // Turbopack configuration (empty to silence the warning)
-  turbopack: {},
-
-  // Webpack configuration for offline support
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Don't resolve 'fs' module on the client to prevent errors
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
-
   // Headers for security
   async headers() {
     return [

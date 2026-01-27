@@ -4,7 +4,7 @@
   "description": "AI-powered learning and earning system for micro-SaaS development",
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-turbopack",
+    "build": "next build",
     "start": "next start",
     "offline": "node scripts/offline-mode.js",
     "hybrid": "node scripts/hybrid-mode.js",
