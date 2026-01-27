@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'AIWebology' }],
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#1f2937',
+};
 
 export default function RootLayout({
   children,
